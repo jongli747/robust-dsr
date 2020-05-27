@@ -1,0 +1,11 @@
+This folder contains the version of Librispeech used for speaker-id experiments. It is derived from processing the original librispeech datasets (an amplitude normalization is performed, beginning and end silences have been removed using a simple energy-based VAD and sentences containing long silences have been split into multiple chunks). 
+
+To use it uncompress the Librispeech_spk_id_sel.tar.gz file. It is a single folder contains all the training/test files. 
+
+The repository also contains the following files:
+
+-libri_tr.scp: it is the list of all the sentences used for training (i.e., 12-15 sec. for each speaker)
+
+-libri_te.scp: it is the list of test sentences
+
+-libri_dic.npy: it is a numpy dictionary containing the labels (i.e., for each sentence it contains an integer corresponding to speaker_id)
