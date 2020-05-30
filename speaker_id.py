@@ -117,6 +117,31 @@ class ArcLoss(nn.Module):
       # print("M:", self.m)
       return log
 
+      
+class EnsembleLoss(nn.Module):
+
+  def __init__(self, margin = 0.5, s = 30):
+      super().__init__()
+
+      # self.m = nn.Parameter(torch.randn(1,1).type(torch.cuda.FloatTensor), requires_grad = True)
+      self.m = margin
+      self.s = s
+      self.epsilon = 0.0000000001
+
+  def forward(self, predicted,target):
+      
+      
+      predicted = predicted/(predicted.norm(p=2,dim = 0) + self.epsilon)
+      
+      indexes = range(predicted.size(0))
+      cos_theta_y = predicted[indexes,target]
+      theta_j = torch.acos(cos_theta_y)
+      exp_s = np.e ** (self.s * (torch.cos(theta_j*self.m + self.m)-self.m))
+      sum_cos_theta_j = (np.e ** (predicted * self.s)).sum(dim=1) - (np.e ** (predicted[indexes, target] * self.s))
+      log = -torch.log(exp_s/(exp_s + sum_cos_theta_j + self.epsilon)).mean()
+      # print("M:", self.m)
+      return log
+
 
 
 
@@ -207,8 +232,8 @@ np.random.seed(seed)
 # loss function
 #cost = nn.NLLLoss()
 #cost = ArcLoss()
-cost = AdditiveMarginSoftmax()
-
+#cost = AdditiveMarginSoftmax()
+cost = EnsembleLoss()
   
 # Converting context and shift in samples
 wlen=int(fs*cw_len/1000.00)
@@ -403,5 +428,3 @@ for epoch in range(N_epochs):
   
   else:
    print("epoch %i, loss_tr=%f err_tr=%f" % (epoch, loss_tot,err_tot))
-
-
