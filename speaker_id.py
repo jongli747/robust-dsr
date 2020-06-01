@@ -232,8 +232,8 @@ np.random.seed(seed)
 # loss function
 #cost = nn.NLLLoss()
 #cost = ArcLoss()
-cost = AdditiveMarginSoftmax()
-
+#cost = AdditiveMarginSoftmax()
+cost = EnsembleLoss()
   
 # Converting context and shift in samples
 wlen=int(fs*cw_len/1000.00)
@@ -428,5 +428,3 @@ for epoch in range(N_epochs):
   
   else:
    print("epoch %i, loss_tr=%f err_tr=%f" % (epoch, loss_tot,err_tot))
-
-
