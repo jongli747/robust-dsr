@@ -71,7 +71,7 @@ class AdditiveMarginSoftmax(nn.Module):
 
       self.m = margin #
       self.s = s
-      self.epsilon = 0.000000000001
+      self.epsilon = 0.0000000001
       print('AMSoftmax m = ' + str(margin))
 
   def forward(self, predicted, target):
@@ -232,8 +232,8 @@ np.random.seed(seed)
 # loss function
 #cost = nn.NLLLoss()
 #cost = ArcLoss()
-#cost = AdditiveMarginSoftmax()
-cost = EnsembleLoss()
+cost = AdditiveMarginSoftmax()
+#cost = EnsembleLoss()
   
 # Converting context and shift in samples
 wlen=int(fs*cw_len/1000.00)
